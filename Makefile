@@ -7,3 +7,9 @@ wire:
 .PHONY: gen
 gen:
 	go run cmd/gen/main.go
+
+# swag 文档
+.PHONY: swag
+swag:
+	swag fmt
+	swag init -g internal/router/router.go -o docs/api

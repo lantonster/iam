@@ -12,10 +12,11 @@ type Server struct {
 	server *http.Server
 }
 
-func NewServer(conf *config.Config) *Server {
+func NewServer(conf *config.Config, handler http.Handler) *Server {
 	return &Server{
 		server: &http.Server{
 			Addr:         fmt.Sprintf(":%d", conf.Port),
+			Handler:      handler,
 			ReadTimeout:  5 * time.Second,
 			WriteTimeout: 10 * time.Second,
 		},
