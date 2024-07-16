@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/lzaun/iam/config"
+	"github.com/lantonster/iam/config"
 )
 
 type Server struct {

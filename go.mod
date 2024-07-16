@@ -1,4 +1,4 @@
-module github.com/lzaun/iam
+module github.com/lantonster/iam
 
 go 1.21
 

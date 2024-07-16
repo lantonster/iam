@@ -5,9 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lzaun/iam/config"
-	_ "github.com/lzaun/iam/docs/api"
-	"github.com/lzaun/iam/internal/router/middleware"
+	"github.com/lantonster/iam/config"
+	_ "github.com/lantonster/iam/docs/api"
+	"github.com/lantonster/iam/internal/handler"
+	"github.com/lantonster/iam/internal/router/middleware"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -22,13 +23,18 @@ import (
 //	@in							header
 //	@name						Authorization
 
-func NewRouter(conf *config.Config) http.Handler {
+func NewRouter(conf *config.Config, h *handler.Handler) http.Handler {
 	engine := gin.Default()
 
+	// middleware
 	engine.Use(middleware.Cors)
 
+	// swagger
 	defer fmt.Printf("API docs: http://localhost:%d/swagger/index.html\n", conf.Port)
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// router
+	initAuthRouter(engine, h.AuthHandler)
 
 	return engine
 }

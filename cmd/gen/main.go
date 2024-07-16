@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/lzaun/iam/config"
-	"github.com/lzaun/iam/internal/model"
-	"github.com/lzaun/iam/internal/repo"
+	"github.com/lantonster/iam/config"
+	"github.com/lantonster/iam/internal/model"
+	"github.com/lantonster/iam/internal/repo"
 	"gorm.io/gen"
 )
 

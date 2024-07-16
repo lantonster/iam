@@ -3,7 +3,7 @@ package repo
 import (
 	"fmt"
 
-	"github.com/lzaun/iam/config"
+	"github.com/lantonster/iam/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
