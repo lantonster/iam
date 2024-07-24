@@ -28,7 +28,7 @@ func TestAuthService_Login(t *testing.T) {
 	res, err := srv.Auth.Login(ctx, req)
 	assert.Nil(t, res)
 	assert.Error(t, err)
-	assert.Equal(t, cerrors.Code(err), ecodes.IAM_USERNAME_NOT_FOUND)
+	assert.Equal(t, ecodes.IAM_USERNAME_NOT_FOUND, cerrors.Code(err))
 
 	// 测试找到用户但密码错误的情况
 	req = &dto.AuthLoginRequest{Username: foundUser.Username, Password: "wrong_password"}
@@ -37,7 +37,7 @@ func TestAuthService_Login(t *testing.T) {
 	res, err = srv.Auth.Login(ctx, req)
 	assert.Nil(t, res)
 	assert.Error(t, err)
-	assert.Equal(t, cerrors.Code(err), ecodes.IAM_PASSWORD_ERROR)
+	assert.Equal(t, ecodes.IAM_PASSWORD_ERROR, cerrors.Code(err))
 
 	// 测试找到用户且密码正确的情况
 	req = &dto.AuthLoginRequest{Username: foundUser.Username, Password: password}
@@ -46,4 +46,18 @@ func TestAuthService_Login(t *testing.T) {
 	res, err = srv.Auth.Login(ctx, req)
 	assert.NotNil(t, res)
 	assert.Nil(t, err)
+}
+
+func TestAuthService_UserInfo(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	setupMock(ctrl)
+
+	res, err := srv.Auth.UserInfo(ctx)
+	assert.NotNil(t, res)
+	assert.Nil(t, err)
+	assert.Equal(t, &dto.AuthUserInfoResponse{
+		UserId:   currentUser.Id,
+		Username: currentUser.Username,
+	}, res)
 }
