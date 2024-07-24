@@ -13,3 +13,8 @@ gen:
 swag:
 	swag fmt
 	swag init -g internal/router/router.go --parseDependency -o docs/api
+
+# mock 生成 mock 代码
+.PHONY: mock
+mock:
+	sh scripts/mock_gen.sh

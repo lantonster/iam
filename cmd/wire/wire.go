@@ -20,7 +20,7 @@ var handlerSet = wire.NewSet(handler.NewHandler)
 
 var serviceSet = wire.NewSet(service.NewService)
 
-var repoSet = wire.NewSet(repo.NewRepo)
+var repoSet = wire.NewSet(repo.NewDefaultRepo)
 
 var configSet = wire.NewSet(config.NewConfig)
 

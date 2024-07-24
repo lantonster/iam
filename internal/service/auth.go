@@ -18,10 +18,10 @@ type AuthService interface {
 }
 
 type defaultAuthService struct {
-	repo *repo.Repo
+	repo repo.Repo
 }
 
-func newDefaultAuthService(repo *repo.Repo) *defaultAuthService {
+func newDefaultAuthService(repo repo.Repo) *defaultAuthService {
 	return &defaultAuthService{
 		repo: repo,
 	}
@@ -31,9 +31,9 @@ func (s *defaultAuthService) Login(c *gin.Context, req *dto.AuthLoginRequest) (r
 	res = &dto.AuthLoginResponse{}
 
 	// 通过用户名获取用户信息
-	user, err := s.repo.User.GetUserByUsername(c, req.Username)
+	user, err := s.repo.User().GetUserByUsername(c, req.Username)
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	// 验证密码

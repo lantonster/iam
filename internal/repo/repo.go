@@ -6,15 +6,23 @@ import (
 	"github.com/lantonster/iam/internal/dao"
 )
 
-type Repo struct {
-	User UserRepo
+type Repo interface {
+	User() UserRepo
 }
 
-func NewRepo(conf *config.Config) *Repo {
+type defaultRepo struct {
+	user UserRepo
+}
+
+func NewDefaultRepo(conf *config.Config) Repo {
 	db := corekit.ConnectMySQL(conf.MySQL)
 	dao.SetDefault(db)
 
-	return &Repo{
-		User: newDefaultUserRepo(),
+	return &defaultRepo{
+		user: newDefaultUserRepo(),
 	}
+}
+
+func (r *defaultRepo) User() UserRepo {
+	return r.user
 }

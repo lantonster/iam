@@ -5,6 +5,7 @@ go 1.21
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang/mock v1.6.0
 	github.com/google/wire v0.6.0
 	github.com/lantonster/cerrors v0.0.0-20240723142521-797eda32e67a
 	github.com/lantonster/corekit v0.0.0-20240723131058-11bbaee11dae

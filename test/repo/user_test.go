@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetUserByUsername(t *testing.T) {
-	repo := r.User
+func TestUserRepo_GetUserByUsername(t *testing.T) {
+	repo := r.User()
 	ctx := context.Background()
 
 	// 测试存在用户的情况

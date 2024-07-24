@@ -11,13 +11,13 @@ import (
 )
 
 var (
-	r  *repo.Repo
+	r  repo.Repo
 	db *gorm.DB
 )
 
 func TestMain(m *testing.M) {
 	conf := config.NewConfig()
-	r = repo.NewRepo(conf)
+	r = repo.NewDefaultRepo(conf)
 
 	// 清空数据库
 	cleardb(conf)
