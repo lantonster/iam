@@ -8,10 +8,10 @@ import (
 )
 
 type AuthHandler struct {
-	service *service.Service
+	service service.Service
 }
 
-func newAuthHandler(service *service.Service) *AuthHandler {
+func newAuthHandler(service service.Service) *AuthHandler {
 	return &AuthHandler{
 		service: service,
 	}
@@ -32,7 +32,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.Auth.Login(c, &req)
+	res, err := h.service.Auth().Login(c, &req)
 	ginkit.Response(c, res, err)
 }
 
@@ -45,6 +45,6 @@ func (h *AuthHandler) Login(c *gin.Context) {
 //	@Failure	401	{object}	ginkit.SwaggerResponseUnauthorized{}
 //	@Router		/auth/user_info [get]
 func (h *AuthHandler) UserInfo(c *gin.Context) {
-	res, err := h.service.Auth.UserInfo(c)
+	res, err := h.service.Auth().UserInfo(c)
 	ginkit.Response(c, res, err)
 }

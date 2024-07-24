@@ -18,7 +18,7 @@ var routerSet = wire.NewSet(router.NewRouter)
 
 var handlerSet = wire.NewSet(handler.NewHandler)
 
-var serviceSet = wire.NewSet(service.NewService)
+var serviceSet = wire.NewSet(service.NewDefaultService)
 
 var repoSet = wire.NewSet(repo.NewDefaultRepo)
 

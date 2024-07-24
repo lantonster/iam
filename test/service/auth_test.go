@@ -25,7 +25,7 @@ func TestAuthService_Login(t *testing.T) {
 	req := &dto.AuthLoginRequest{Username: "nonexistent_user", Password: "password"}
 	mockRepo.EXPECT().User().Return(mockUserRepo)
 	mockUserRepo.EXPECT().GetUserByUsername(ctx, req.Username).Return(nil, cerrors.WithCode(ecodes.IAM_USERNAME_NOT_FOUND, "user not found"))
-	res, err := srv.Auth.Login(ctx, req)
+	res, err := srv.Auth().Login(ctx, req)
 	assert.Nil(t, res)
 	assert.Error(t, err)
 	assert.Equal(t, ecodes.IAM_USERNAME_NOT_FOUND, cerrors.Code(err))
@@ -34,7 +34,7 @@ func TestAuthService_Login(t *testing.T) {
 	req = &dto.AuthLoginRequest{Username: foundUser.Username, Password: "wrong_password"}
 	mockRepo.EXPECT().User().Return(mockUserRepo)
 	mockUserRepo.EXPECT().GetUserByUsername(ctx, req.Username).Return(foundUser, nil)
-	res, err = srv.Auth.Login(ctx, req)
+	res, err = srv.Auth().Login(ctx, req)
 	assert.Nil(t, res)
 	assert.Error(t, err)
 	assert.Equal(t, ecodes.IAM_PASSWORD_ERROR, cerrors.Code(err))
@@ -43,7 +43,7 @@ func TestAuthService_Login(t *testing.T) {
 	req = &dto.AuthLoginRequest{Username: foundUser.Username, Password: password}
 	mockRepo.EXPECT().User().Return(mockUserRepo)
 	mockUserRepo.EXPECT().GetUserByUsername(ctx, req.Username).Return(foundUser, nil)
-	res, err = srv.Auth.Login(ctx, req)
+	res, err = srv.Auth().Login(ctx, req)
 	assert.NotNil(t, res)
 	assert.Nil(t, err)
 }
@@ -53,7 +53,7 @@ func TestAuthService_UserInfo(t *testing.T) {
 	defer ctrl.Finish()
 	setupMock(ctrl)
 
-	res, err := srv.Auth.UserInfo(ctx)
+	res, err := srv.Auth().UserInfo(ctx)
 	assert.NotNil(t, res)
 	assert.Nil(t, err)
 	assert.Equal(t, &dto.AuthUserInfoResponse{

@@ -11,7 +11,7 @@ import (
 
 var (
 	ctx *gin.Context
-	srv *service.Service
+	srv service.Service
 
 	currentUser *model.User
 
@@ -24,7 +24,7 @@ func setupMock(ctrl *gomock.Controller) {
 	mockUserRepo = repo.NewMockUserRepo(ctrl)
 
 	ctx = &gin.Context{}
-	srv = service.NewService(mockRepo)
+	srv = service.NewDefaultService(mockRepo)
 
 	// 在 context 中设置当前登陆用户的信息，模拟登陆校验中间的操作
 	currentUser = &model.User{Id: 1, Username: "admin"}
