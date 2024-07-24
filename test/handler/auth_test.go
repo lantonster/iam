@@ -29,3 +29,21 @@ func TestAuthHandler_Login(t *testing.T) {
 	w = doRequest("GET", "/auth/login?username=admin&password=123456", nil)
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestAuthHandler_UserInfo(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	setupMock(ctrl)
+
+	// 测试未登陆的情况
+	w := doRequestWithoutAuthorization("GET", "/auth/user_info", nil)
+	assert.Equal(t, http.StatusUnauthorized, w.Code)
+
+	mockService.EXPECT().Auth().Return(mockAuthService)
+	mockAuthService.EXPECT().UserInfo(gomock.Any()).Return(&dto.AuthUserInfoResponse{}, nil)
+
+	// 测试登陆的情况
+	w = doRequest("GET", "/auth/user_info", nil)
+	assert.Equal(t, http.StatusOK, w.Code)
+
+}
