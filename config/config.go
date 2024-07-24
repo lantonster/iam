@@ -1,14 +1,9 @@
 package config
 
+import "github.com/lantonster/corekit"
+
 type Config struct {
 	Port int
 
-	MySQL MySQL
-}
-
-type MySQL struct {
-	Username string
-	Password string
-	Address  string
-	DBName   string
+	MySQL *corekit.MySQlConfig
 }

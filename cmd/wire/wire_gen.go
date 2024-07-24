@@ -10,16 +10,19 @@ import (
 	"github.com/google/wire"
 	"github.com/lantonster/iam/config"
 	"github.com/lantonster/iam/internal/handler"
+	"github.com/lantonster/iam/internal/repo"
 	"github.com/lantonster/iam/internal/router"
 	"github.com/lantonster/iam/internal/server"
+	"github.com/lantonster/iam/internal/service"
 )
 
 // Injectors from wire.go:
 
 func Init() *server.Server {
 	configConfig := config.NewConfig()
-	authHandler := handler.NewAuthHandler()
-	handlerHandler := handler.NewHandler(authHandler)
+	repoRepo := repo.NewRepo(configConfig)
+	serviceService := service.NewService(repoRepo)
+	handlerHandler := handler.NewHandler(serviceService)
 	httpHandler := router.NewRouter(configConfig, handlerHandler)
 	serverServer := server.NewServer(configConfig, httpHandler)
 	return serverServer
@@ -31,6 +34,10 @@ var serverSet = wire.NewSet(server.NewServer)
 
 var routerSet = wire.NewSet(router.NewRouter)
 
-var handlerSet = wire.NewSet(handler.NewHandler, handler.NewAuthHandler)
+var handlerSet = wire.NewSet(handler.NewHandler)
+
+var serviceSet = wire.NewSet(service.NewService)
+
+var repoSet = wire.NewSet(repo.NewRepo)
 
 var configSet = wire.NewSet(config.NewConfig)

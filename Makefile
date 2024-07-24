@@ -12,4 +12,4 @@ gen:
 .PHONY: swag
 swag:
 	swag fmt
-	swag init -g internal/router/router.go -o docs/api
+	swag init -g internal/router/router.go --parseDependency -o docs/api

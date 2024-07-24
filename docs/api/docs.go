@@ -27,23 +27,86 @@ const docTemplate = `{
                 "summary": "用户登陆",
                 "parameters": [
                     {
-                        "maxLength": 20,
                         "type": "string",
-                        "description": "用户名",
-                        "name": "username",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "maxLength": 60,
-                        "type": "string",
+                        "default": "123456",
                         "description": "密码",
                         "name": "password",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "admin",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ginkit.SwaggerResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.AuthLoginResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ginkit.SwaggerResponseInvalidParam"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.AuthLoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "description": "token",
+                    "type": "string",
+                    "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjE4NzI3ODUsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYWRtaW4ifQ.ZNgtQlyfVacyBg_ZouF4C3CpiMVxIaWXrh_a1i-OiAw"
+                }
+            }
+        },
+        "ginkit.SwaggerResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": 0
+                },
+                "message": {
+                    "type": "string",
+                    "default": "Success"
+                }
+            }
+        },
+        "ginkit.SwaggerResponseInvalidParam": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": 400
+                },
+                "message": {
+                    "type": "string",
+                    "default": "Invalid parameters in request"
+                }
             }
         }
     },

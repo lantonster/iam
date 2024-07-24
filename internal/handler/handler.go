@@ -1,11 +1,13 @@
 package handler
 
+import "github.com/lantonster/iam/internal/service"
+
 type Handler struct {
-	AuthHandler *AuthHandler
+	Auth *AuthHandler
 }
 
-func NewHandler(authHandler *AuthHandler) *Handler {
+func NewHandler(service *service.Service) *Handler {
 	return &Handler{
-		AuthHandler: authHandler,
+		Auth: newAuthHandler(service),
 	}
 }

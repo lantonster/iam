@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lantonster/ginkit"
 	"github.com/lantonster/iam/config"
 	_ "github.com/lantonster/iam/docs/api"
 	"github.com/lantonster/iam/internal/handler"
-	"github.com/lantonster/iam/internal/router/middleware"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -27,14 +27,14 @@ func NewRouter(conf *config.Config, h *handler.Handler) http.Handler {
 	engine := gin.Default()
 
 	// middleware
-	engine.Use(middleware.Cors)
+	engine.Use(ginkit.CorsMiddleware)
 
 	// swagger
 	defer fmt.Printf("API docs: http://localhost:%d/swagger/index.html\n", conf.Port)
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// router
-	initAuthRouter(engine, h.AuthHandler)
+	initAuthRouter(engine, h.Auth)
 
 	return engine
 }

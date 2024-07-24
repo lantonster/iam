@@ -8,11 +8,12 @@ import (
 func initAuthRouter(r *gin.Engine, h *handler.AuthHandler) {
 	g := r.Group("/auth")
 	{
+		// 登录
 		g.GET("/login", h.Login)
 
 		g.GET("/logout")
 
-		g.GET("/account")
+		g.GET("/user_info")
 
 		g.GET("/register")
 	}

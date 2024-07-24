@@ -1,14 +1,20 @@
 package repo
 
-import "gorm.io/gorm"
+import (
+	"github.com/lantonster/corekit"
+	"github.com/lantonster/iam/config"
+	"github.com/lantonster/iam/internal/dao"
+)
 
 type Repo struct {
-	*Query
+	User UserRepo
 }
 
-func NewRepo(db *gorm.DB) *Repo {
-	SetDefault(db)
+func NewRepo(conf *config.Config) *Repo {
+	db := corekit.ConnectMySQL(conf.MySQL)
+	dao.SetDefault(db)
+
 	return &Repo{
-		Query: Q,
+		User: newDefaultUserRepo(),
 	}
 }
