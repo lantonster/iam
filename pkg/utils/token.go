@@ -55,7 +55,7 @@ func ParseToken(tokenString string) (*TokenBody, error) {
 	})
 
 	if err != nil {
-		return nil, cerrors.Wrap(err, "parse token")
+		return nil, err
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -65,5 +65,5 @@ func ParseToken(tokenString string) (*TokenBody, error) {
 		}, nil
 	}
 
-	return nil, cerrors.New("parse token failed")
+	return nil, cerrors.New("invalid token")
 }

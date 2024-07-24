@@ -12,6 +12,9 @@ import (
 type AuthService interface {
 	// Login 登录
 	Login(c *gin.Context, req *dto.AuthLoginRequest) (res *dto.AuthLoginResponse, err error)
+
+	// UserInfo 获取用户信息
+	UserInfo(c *gin.Context) (res *dto.AuthUserInfoResponse, err error)
 }
 
 type defaultAuthService struct {
@@ -41,6 +44,15 @@ func (s *defaultAuthService) Login(c *gin.Context, req *dto.AuthLoginRequest) (r
 	// 生成 token
 	if res.Token, err = utils.GenerateToken(user.Id, user.Username); err != nil {
 		return nil, cerrors.Wrap(err, "generate token")
+	}
+
+	return res, nil
+}
+
+func (s *defaultAuthService) UserInfo(c *gin.Context) (res *dto.AuthUserInfoResponse, err error) {
+	res = &dto.AuthUserInfoResponse{
+		UserId:   utils.GetUserIdFromContext(c),
+		Username: utils.GetUsernameFromContext(c),
 	}
 
 	return res, nil

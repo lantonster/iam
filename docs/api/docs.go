@@ -70,6 +70,45 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/auth/user_info": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取当前登陆用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ginkit.SwaggerResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.AuthUserInfoResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ginkit.SwaggerResponseUnauthorized"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -80,6 +119,21 @@ const docTemplate = `{
                     "description": "token",
                     "type": "string",
                     "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjE4NzI3ODUsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYWRtaW4ifQ.ZNgtQlyfVacyBg_ZouF4C3CpiMVxIaWXrh_a1i-OiAw"
+                }
+            }
+        },
+        "dto.AuthUserInfoResponse": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "description": "用户 id",
+                    "type": "integer",
+                    "default": 1
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string",
+                    "default": "admin"
                 }
             }
         },
@@ -108,10 +162,23 @@ const docTemplate = `{
                     "default": "Invalid parameters in request"
                 }
             }
+        },
+        "ginkit.SwaggerResponseUnauthorized": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": 401
+                },
+                "message": {
+                    "type": "string",
+                    "default": "Unauthorized"
+                }
+            }
         }
     },
     "securityDefinitions": {
-        "apiKey": {
+        "ApiKeyAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

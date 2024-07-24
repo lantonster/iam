@@ -8,3 +8,8 @@ type AuthLoginRequest struct {
 type AuthLoginResponse struct {
 	Token string `json:"token" default:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjE4NzI3ODUsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYWRtaW4ifQ.ZNgtQlyfVacyBg_ZouF4C3CpiMVxIaWXrh_a1i-OiAw"` // token
 }
+
+type AuthUserInfoResponse struct {
+	UserId   int64  `json:"userId" default:"1"`       // 用户 id
+	Username string `json:"username" default:"admin"` // 用户名
+}

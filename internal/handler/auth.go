@@ -35,3 +35,16 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	res, err := h.service.Auth.Login(c, &req)
 	ginkit.Response(c, res, err)
 }
+
+// UserInfo godoc
+//
+//	@Summary	获取当前登陆用户信息
+//	@Produce	json
+//	@Security	ApiKeyAuth
+//	@Success	200	{object}	ginkit.SwaggerResponse{data=dto.AuthUserInfoResponse}
+//	@Failure	401	{object}	ginkit.SwaggerResponseUnauthorized{}
+//	@Router		/auth/user_info [get]
+func (h *AuthHandler) UserInfo(c *gin.Context) {
+	res, err := h.service.Auth.UserInfo(c)
+	ginkit.Response(c, res, err)
+}

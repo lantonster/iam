@@ -13,7 +13,8 @@ func initAuthRouter(r *gin.Engine, h *handler.AuthHandler) {
 
 		g.GET("/logout")
 
-		g.GET("/user_info")
+		// 获取当前登陆用户信息
+		g.GET("/user_info", h.UserInfo)
 
 		g.GET("/register")
 	}

@@ -109,10 +109,10 @@ github.com/lantonster/cerrors v0.0.0-20240723142521-797eda32e67a h1:PWXsp6WB/m5r
 github.com/lantonster/cerrors v0.0.0-20240723142521-797eda32e67a/go.mod h1:oSsQzPV8ktF7SuSHoD7U/K45MD4C5XUZK+VhzRLhvOM=
 github.com/lantonster/corekit v0.0.0-20240723131058-11bbaee11dae h1:imcywYz7Kd+NJG+cyVNOYwanZnKk4JZJS9Jm1hgAhtE=
 github.com/lantonster/corekit v0.0.0-20240723131058-11bbaee11dae/go.mod h1:5FdXw8Yb8C26uaA3gYOfuWIBv24VH5geqJ6VhppRMIE=
-github.com/lantonster/ecodes v0.0.0-20240724022655-defa94578d86 h1:PTWei39s8ftoD9/zeDCOV1e6zdMR5aq/I6Sf6U7puY4=
-github.com/lantonster/ecodes v0.0.0-20240724022655-defa94578d86/go.mod h1:4HSHEXlB91tszbHsYjtd1VkkxTXAaoSZKPFtq5XW3Kc=
-github.com/lantonster/ginkit v0.0.0-20240724021352-fa1295c908f3 h1:Wn/tS4GFZUanCbLhBZ64fVn6gBqAlvRy/XaGfiznGFU=
-github.com/lantonster/ginkit v0.0.0-20240724021352-fa1295c908f3/go.mod h1:G3bsMJKUywUEF6DumnAlBWhOMvzwbqrDuTfxUHB9FrA=
+github.com/lantonster/ecodes v0.0.0-20240724052154-7110f67af2a6 h1:IbCefpPTJDkZd6d36tlRzwwSvqVBZZ0jygHKKcuwKio=
+github.com/lantonster/ecodes v0.0.0-20240724052154-7110f67af2a6/go.mod h1:4HSHEXlB91tszbHsYjtd1VkkxTXAaoSZKPFtq5XW3Kc=
+github.com/lantonster/ginkit v0.0.0-20240724032233-efb4c6355184 h1:OFyB+Ub69HS2ofzQQPNvRfk72r2AFlKJD03WfbWwISs=
+github.com/lantonster/ginkit v0.0.0-20240724032233-efb4c6355184/go.mod h1:G3bsMJKUywUEF6DumnAlBWhOMvzwbqrDuTfxUHB9FrA=
 github.com/leodido/go-urn v1.4.0 h1:WT9HwE9SGECu3lg4d/dIA+jxlljEa1/ffXKmRjqdmIQ=
 github.com/leodido/go-urn v1.4.0/go.mod h1:bvxc+MVxLKB4z00jd1z+Dvzr47oO32F/QSNjSBOlFxI=
 github.com/magiconair/properties v1.8.7 h1:IeQXZAiQcpL9mgcAe1Nu6cX9LLw6ExEHKjN0VQdvPDY=
