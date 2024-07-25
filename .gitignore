@@ -1,3 +1,4 @@
 config.yaml
 docs/api/swagger.json
 docs/api/swagger.yaml
+coverage.out

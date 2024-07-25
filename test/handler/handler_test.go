@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/lantonster/iam/config"
 	"github.com/lantonster/iam/internal/handler"
@@ -17,7 +16,6 @@ import (
 
 var (
 	h http.Handler
-	c *gin.Context
 
 	testUser *model.User
 
@@ -31,7 +29,6 @@ func setupMock(ctrl *gomock.Controller) {
 
 	testUser = &model.User{Id: 1, Username: "test"}
 
-	c = &gin.Context{}
 	h = router.NewRouter(config.NewConfig(), handler.NewHandler(mockService))
 }
 

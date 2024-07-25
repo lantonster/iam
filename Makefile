@@ -17,4 +17,11 @@ swag:
 # mock 生成 mock 代码
 .PHONY: mock
 mock:
-	sh scripts/mock_gen.sh
+	sh scripts/mock_gen.sh internal/repo test/repo repo
+	sh scripts/mock_gen.sh internal/service test/service service
+
+# test 测试
+.PHONY: test
+test:
+	go test ./... -v -coverprofile=test/coverage.out
+	go tool cover -html=test/coverage.out

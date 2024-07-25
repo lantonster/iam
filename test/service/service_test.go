@@ -1,6 +1,8 @@
 package service
 
 import (
+	"net/http/httptest"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/lantonster/iam/internal/model"
@@ -23,7 +25,9 @@ func setupMock(ctrl *gomock.Controller) {
 	mockRepo = repo.NewMockRepo(ctrl)
 	mockUserRepo = repo.NewMockUserRepo(ctrl)
 
-	ctx = &gin.Context{}
+	gin.SetMode(gin.ReleaseMode)
+	w := httptest.NewRecorder()
+	ctx, _ = gin.CreateTestContext(w)
 	srv = service.NewDefaultService(mockRepo)
 
 	// 在 context 中设置当前登陆用户的信息，模拟登陆校验中间的操作
