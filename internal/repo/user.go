@@ -12,8 +12,11 @@ import (
 )
 
 type UserRepo interface {
-	// GetUserByUsername 通过用户名获取用户
+	// 通过用户名获取用户
 	GetUserByUsername(c context.Context, username string) (user *model.User, err error)
+
+	// 检查用户名是否重复
+	CheckUserNameDuplication(c context.Context, username string) (bool, error)
 }
 
 type defaultUserRepo struct{}
@@ -35,5 +38,17 @@ func (r *defaultUserRepo) GetUserByUsername(c context.Context, username string) 
 		return nil, cerrors.Wrap(err, "failed to get user by username")
 	}
 
-	return
+	return user, nil
+}
+
+// CheckUserNameDuplication 检查用户名是否重复
+func (r *defaultUserRepo) CheckUserNameDuplication(c context.Context, username string) (bool, error) {
+	u := dao.User
+
+	count, err := u.WithContext(c).Where(u.Username.Eq(username)).Count()
+	if err != nil {
+		return false, cerrors.Wrap(err, "failed to check user name duplication")
+	}
+
+	return count > 0, nil
 }

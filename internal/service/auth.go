@@ -10,11 +10,14 @@ import (
 )
 
 type AuthService interface {
-	// Login 登录
+	// 登录
 	Login(c *gin.Context, req *dto.AuthLoginRequest) (res *dto.AuthLoginResponse, err error)
 
-	// UserInfo 获取用户信息
+	// 获取用户信息
 	UserInfo(c *gin.Context) (res *dto.AuthUserInfoResponse, err error)
+
+	// 用户名是否可用
+	UsernameAvailable(c *gin.Context, req *dto.AuthUsernameAvailableRequest) error
 }
 
 type defaultAuthService struct {
@@ -56,4 +59,26 @@ func (s *defaultAuthService) UserInfo(c *gin.Context) (res *dto.AuthUserInfoResp
 	}
 
 	return res, nil
+}
+
+// UsernameAvailable 方法用于检查用户名是否可用
+func (s *defaultAuthService) UsernameAvailable(c *gin.Context, req *dto.AuthUsernameAvailableRequest) error {
+	// 检查用户名长度，如果小于 1 或大于 30，则返回错误
+	if l := len(req.Username); l < 1 || 30 < l {
+		return cerrors.WithCode(ecodes.IAM_INVALID_USERNAME_LENGTH, "the length of username should within the range of 1 to 30")
+	}
+
+	// 检查用户名格式，如果不符合要求（不是由字母、数字和下划线组成），则返回错误
+	if !utils.ValidateUsernameFormat(req.Username) {
+		return cerrors.WithCode(ecodes.IAM_INVALID_USERNAME_FORMAT, "the username can only be composed of letters, numbers and underscores")
+	}
+
+	// 检查用户名是否重复，如果重复，则返回错误
+	if duplicated, err := s.repo.User().CheckUserNameDuplication(c, req.Username); err != nil {
+		return err
+	} else if duplicated {
+		return cerrors.WithCode(ecodes.IAM_USERNAME_ALREADY_EXISTS, "the username already exists")
+	}
+
+	return nil
 }

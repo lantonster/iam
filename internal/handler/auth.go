@@ -48,3 +48,22 @@ func (h *AuthHandler) UserInfo(c *gin.Context) {
 	res, err := h.service.Auth().UserInfo(c)
 	ginkit.Response(c, res, err)
 }
+
+// UsernameAvailable godoc
+//
+//	@Summary	验证用户名可用性
+//	@Produce	json
+//	@Param		query	query		dto.AuthUsernameAvailableRequest	true	"验证用户名可用性"
+//	@Success	200		{object}	ginkit.SwaggerResponse{}
+//	@Failure	400		{object}	ginkit.SwaggerResponseInvalidParam{}
+//	@Router		/auth/username_available [get]
+func (h *AuthHandler) UsernameAvailable(c *gin.Context) {
+	var req dto.AuthUsernameAvailableRequest
+	if err := c.ShouldBind(&req); err != nil {
+		ginkit.ResponseInvalidParam(c, err)
+		return
+	}
+
+	err := h.service.Auth().UsernameAvailable(c, &req)
+	ginkit.Response(c, nil, err)
+}

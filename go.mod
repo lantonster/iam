@@ -9,8 +9,8 @@ require (
 	github.com/google/wire v0.6.0
 	github.com/lantonster/cerrors v0.0.0-20240723142521-797eda32e67a
 	github.com/lantonster/corekit v0.0.0-20240723131058-11bbaee11dae
-	github.com/lantonster/ecodes v0.0.0-20240724052154-7110f67af2a6
-	github.com/lantonster/ginkit v0.0.0-20240724032233-efb4c6355184
+	github.com/lantonster/ecodes v0.0.0-20240725152123-191f2005c414
+	github.com/lantonster/ginkit v0.0.0-20240725052050-0f28d25d08b1
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0

@@ -35,6 +35,21 @@ func (m *MockUserRepo) EXPECT() *MockUserRepoMockRecorder {
 	return m.recorder
 }
 
+// CheckUserNameDuplication mocks base method.
+func (m *MockUserRepo) CheckUserNameDuplication(c context.Context, username string) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckUserNameDuplication", c, username)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckUserNameDuplication indicates an expected call of CheckUserNameDuplication.
+func (mr *MockUserRepoMockRecorder) CheckUserNameDuplication(c, username interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserNameDuplication", reflect.TypeOf((*MockUserRepo)(nil).CheckUserNameDuplication), c, username)
+}
+
 // GetUserByUsername mocks base method.
 func (m *MockUserRepo) GetUserByUsername(c context.Context, username string) (*model.User, error) {
 	m.ctrl.T.Helper()

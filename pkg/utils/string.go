@@ -1,6 +1,10 @@
 package utils
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"unicode"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 // HashPassword 使用 bcrypt 算法对密码进行加密。
 // 它接受一个密码和一个盐值作为输入，返回加密后的密码字符串和可能的错误。
@@ -34,4 +38,17 @@ func HashPassword(password, salt string) (string, error) {
 //   - 如果输入的密码和盐经过哈希处理后与存储的哈希密码匹配，则返回true；否则返回false。
 func VerifyPassword(password, salt, hashedPassword string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password+salt)) == nil
+}
+
+// ValidateUsernameFormat 函数用于验证用户名是否有效。
+// 有效的用户名只能包含英文字母、数字和下划线，不接受其他语言字符。
+func ValidateUsernameFormat(username string) bool {
+	for _, r := range username {
+		// 如果字符不是英文字母、数字或下划线，则返回 false
+		if !('a' <= r && r <= 'z' || 'A' <= r && r <= 'Z' || unicode.IsDigit(r) || r == '_') {
+			return false
+		}
+	}
+	// 如果所有字符都符合要求，则返回 true
+	return true
 }

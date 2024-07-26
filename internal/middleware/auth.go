@@ -10,20 +10,8 @@ import (
 	"github.com/lantonster/iam/pkg/utils"
 )
 
-var publicRoutes = []string{
-	"/auth/login",
-}
-
 // LoginRequiredMiddleware 是一个 Gin 中间件函数，用于处理请求的登录验证和授权
 func LoginRequiredMiddleware(c *gin.Context) {
-	// 如果当前请求的路径是公开路由，则直接放行，执行后续的处理函数
-	for _, rout := range publicRoutes {
-		if c.Request.URL.Path == rout {
-			c.Next()
-			return
-		}
-	}
-
 	// 从请求头中获取 'Authorization' 的值
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {

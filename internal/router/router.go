@@ -33,10 +33,11 @@ func NewRouter(conf *config.Config, h *handler.Handler) http.Handler {
 
 	// middleware
 	engine.Use(ginkit.CorsMiddleware)
-	engine.Use(middleware.LoginRequiredMiddleware)
 
 	// router
 	initAuthRouter(engine, h.Auth)
+
+	engine.Use(middleware.LoginRequiredMiddleware)
 
 	return engine
 }

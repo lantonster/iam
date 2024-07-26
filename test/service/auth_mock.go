@@ -64,3 +64,17 @@ func (mr *MockAuthServiceMockRecorder) UserInfo(c interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UserInfo", reflect.TypeOf((*MockAuthService)(nil).UserInfo), c)
 }
+
+// UsernameAvailable mocks base method.
+func (m *MockAuthService) UsernameAvailable(c *gin.Context, req *dto.AuthUsernameAvailableRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UsernameAvailable", c, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UsernameAvailable indicates an expected call of UsernameAvailable.
+func (mr *MockAuthServiceMockRecorder) UsernameAvailable(c, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UsernameAvailable", reflect.TypeOf((*MockAuthService)(nil).UsernameAvailable), c, req)
+}

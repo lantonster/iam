@@ -109,6 +109,37 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/auth/username_available": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "验证用户名可用性",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "admin",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginkit.SwaggerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ginkit.SwaggerResponseInvalidParam"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

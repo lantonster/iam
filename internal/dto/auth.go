@@ -13,3 +13,7 @@ type AuthUserInfoResponse struct {
 	UserId   int64  `json:"userId" default:"1"`       // 用户 id
 	Username string `json:"username" default:"admin"` // 用户名
 }
+
+type AuthUsernameAvailableRequest struct {
+	Username string `form:"username" binding:"required" default:"admin"`
+}
