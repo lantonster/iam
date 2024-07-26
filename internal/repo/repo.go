@@ -1,7 +1,6 @@
 package repo
 
 import (
-	"github.com/lantonster/corekit"
 	"github.com/lantonster/iam/config"
 	"github.com/lantonster/iam/internal/dao"
 )
@@ -15,7 +14,10 @@ type defaultRepo struct {
 }
 
 func NewDefaultRepo(conf *config.Config) Repo {
-	db := corekit.ConnectMySQL(conf.MySQL)
+	db, err := conf.MySQL.Connect()
+	if err != nil {
+		panic(err)
+	}
 	dao.SetDefault(db)
 
 	return &defaultRepo{

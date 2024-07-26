@@ -3,7 +3,6 @@ package repo
 import (
 	"testing"
 
-	"github.com/lantonster/corekit"
 	"github.com/lantonster/iam/config"
 	"github.com/lantonster/iam/internal/model"
 	"github.com/lantonster/iam/internal/repo"
@@ -29,7 +28,10 @@ func TestMain(m *testing.M) {
 }
 
 func cleardb(conf *config.Config) {
-	db = corekit.ConnectMySQL(conf.MySQL)
+	var err error
+	if db, err = conf.MySQL.Connect(); err != nil {
+		panic(err)
+	}
 
 	// 获取所有表名
 	tables := []string{}
