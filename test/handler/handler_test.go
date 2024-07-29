@@ -36,6 +36,9 @@ func doRequest(method string, url string, body io.Reader) *httptest.ResponseReco
 	req, _ := http.NewRequest(method, url, body)
 	token, _ := utils.GenerateToken(testUser.Id, testUser.Username)
 	req.Header.Set("Authorization", "Bearer "+token)
+	if method == "post" || method == "POST" {
+		req.Header.Set("Content-Type", "application/json")
+	}
 
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, req)

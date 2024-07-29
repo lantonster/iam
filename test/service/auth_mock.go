@@ -50,6 +50,20 @@ func (mr *MockAuthServiceMockRecorder) Login(c, req interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockAuthService)(nil).Login), c, req)
 }
 
+// SendCode mocks base method.
+func (m *MockAuthService) SendCode(c *gin.Context, req *dto.AuthSendCodeRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SendCode", c, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SendCode indicates an expected call of SendCode.
+func (mr *MockAuthServiceMockRecorder) SendCode(c, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendCode", reflect.TypeOf((*MockAuthService)(nil).SendCode), c, req)
+}
+
 // UserInfo mocks base method.
 func (m *MockAuthService) UserInfo(c *gin.Context) (*dto.AuthUserInfoResponse, error) {
 	m.ctrl.T.Helper()

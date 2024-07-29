@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"net/http"
 	"testing"
 
@@ -74,4 +75,29 @@ func TestAuthHandler_UsernameAvailable(t *testing.T) {
 		w := doRequest("GET", "/auth/username_available?username=admin", nil)
 		assert.Equal(t, http.StatusOK, w.Code)
 	})
+}
+
+func TestAuthHandler_SendCode(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	setupMock(ctrl)
+
+	t.Run("测试参数缺失的情况", func(t *testing.T) {
+		w := doRequest("POST", "/auth/send_code", bytes.NewBuffer([]byte(`{"email":""}`)))
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+	})
+
+	t.Run("测试参数拼错的情况", func(t *testing.T) {
+		w := doRequest("POST", "/auth/send_code", bytes.NewBuffer([]byte(`{"Email":""}`)))
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+	})
+
+	t.Run("测试正确填入参数的情况", func(t *testing.T) {
+		mockService.EXPECT().Auth().Return(mockAuthService)
+		mockAuthService.EXPECT().SendCode(gomock.Any(), gomock.Any()).Return(nil)
+
+		w := doRequest("POST", "/auth/send_code", bytes.NewBuffer([]byte(`{"email":"example@example.com"}`)))
+		assert.Equal(t, http.StatusOK, w.Code)
+	})
+
 }

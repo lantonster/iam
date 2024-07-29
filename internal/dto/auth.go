@@ -17,3 +17,7 @@ type AuthUserInfoResponse struct {
 type AuthUsernameAvailableRequest struct {
 	Username string `form:"username" binding:"required" default:"admin"`
 }
+
+type AuthSendCodeRequest struct {
+	Email string `json:"email" binding:"required" default:"example@example.com"`
+}

@@ -18,14 +18,11 @@ func initAuthRouter(r *gin.Engine, h *handler.AuthHandler) {
 		// 验证用户名可用性
 		g.GET("/username_available", h.UsernameAvailable)
 
-		// 验证邮箱可用性
-		g.GET("/email_available")
+		// 发送验证码
+		g.POST("/send_code", h.SendCode)
 
 		// 密码强度检查
 		g.POST("/check_password")
-
-		// 发送验证码
-		g.POST("/send_code")
 
 		// 注册
 		g.POST("/register")

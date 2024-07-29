@@ -47,3 +47,17 @@ func (mr *MockRepoMockRecorder) User() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "User", reflect.TypeOf((*MockRepo)(nil).User))
 }
+
+// VerificationCode mocks base method.
+func (m *MockRepo) VerificationCode() repo.VerificationCodeRepo {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "VerificationCode")
+	ret0, _ := ret[0].(repo.VerificationCodeRepo)
+	return ret0
+}
+
+// VerificationCode indicates an expected call of VerificationCode.
+func (mr *MockRepoMockRecorder) VerificationCode() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerificationCode", reflect.TypeOf((*MockRepo)(nil).VerificationCode))
+}

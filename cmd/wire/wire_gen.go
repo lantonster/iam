@@ -21,7 +21,7 @@ import (
 func Init() *server.Server {
 	configConfig := config.NewConfig()
 	repoRepo := repo.NewDefaultRepo(configConfig)
-	serviceService := service.NewDefaultService(repoRepo)
+	serviceService := service.NewDefaultService(configConfig, repoRepo)
 	handlerHandler := handler.NewHandler(serviceService)
 	httpHandler := router.NewRouter(configConfig, handlerHandler)
 	serverServer := server.NewServer(configConfig, httpHandler)

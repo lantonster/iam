@@ -71,6 +71,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/send_code": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送验证码",
+                "parameters": [
+                    {
+                        "description": "发送验证码",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthSendCodeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginkit.SwaggerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ginkit.SwaggerResponseInvalidParam"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/user_info": {
             "get": {
                 "security": [
@@ -150,6 +183,18 @@ const docTemplate = `{
                     "description": "token",
                     "type": "string",
                     "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjE4NzI3ODUsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYWRtaW4ifQ.ZNgtQlyfVacyBg_ZouF4C3CpiMVxIaWXrh_a1i-OiAw"
+                }
+            }
+        },
+        "dto.AuthSendCodeRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "default": "example@example.com"
                 }
             }
         },

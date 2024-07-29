@@ -1,9 +1,12 @@
 package utils
 
 import (
+	"fmt"
+	"time"
 	"unicode"
 
 	"golang.org/x/crypto/bcrypt"
+	"golang.org/x/exp/rand"
 )
 
 // HashPassword 使用 bcrypt 算法对密码进行加密。
@@ -51,4 +54,15 @@ func ValidateUsernameFormat(username string) bool {
 	}
 	// 如果所有字符都符合要求，则返回 true
 	return true
+}
+
+// GenerateVerificationCode 生成六位验证码
+func GenerateVerificationCode() string {
+	rand.Seed(uint64(time.Now().UnixNano()))
+	var code string
+	for i := 0; i < 6; i++ {
+		num := rand.Intn(10)
+		code += fmt.Sprint(num)
+	}
+	return code
 }

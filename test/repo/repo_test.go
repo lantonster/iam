@@ -3,6 +3,7 @@ package repo
 import (
 	"testing"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/lantonster/iam/config"
 	"github.com/lantonster/iam/internal/model"
 	"github.com/lantonster/iam/internal/repo"
@@ -10,16 +11,26 @@ import (
 )
 
 var (
-	r  repo.Repo
-	db *gorm.DB
+	r   repo.Repo
+	db  *gorm.DB
+	rdb *redis.Client
 )
 
 func TestMain(m *testing.M) {
 	conf := config.NewConfig()
 	r = repo.NewDefaultRepo(conf)
 
+	var err error
+	if db, err = conf.MySQL.Connect(); err != nil {
+		panic(err)
+	}
+	if rdb, err = conf.Redis.Connect(); err != nil {
+		panic(err)
+	}
+
 	// 清空数据库
-	cleardb(conf)
+	cleardb()
+	clearrdb()
 
 	// 填充测试数据
 	testdata()
@@ -27,12 +38,7 @@ func TestMain(m *testing.M) {
 	m.Run()
 }
 
-func cleardb(conf *config.Config) {
-	var err error
-	if db, err = conf.MySQL.Connect(); err != nil {
-		panic(err)
-	}
-
+func cleardb() {
 	// 获取所有表名
 	tables := []string{}
 	db.Raw("SHOW TABLES").Scan(&tables)
@@ -41,6 +47,10 @@ func cleardb(conf *config.Config) {
 	for _, table := range tables {
 		db.Exec("TRUNCATE TABLE " + table)
 	}
+}
+
+func clearrdb() {
+	rdb.FlushDB(rdb.Context())
 }
 
 var (

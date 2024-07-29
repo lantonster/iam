@@ -121,3 +121,41 @@ func TestAuthService_UsernameAvailable(t *testing.T) {
 		assert.NoError(t, err)
 	})
 }
+
+func TestAuthService_SendCode(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	setupMock(ctrl)
+
+	t.Run("测试空的邮箱", func(t *testing.T) {
+		mockRepo.EXPECT().VerificationCode().Return(mockVerificationCodeRepo)
+		mockVerificationCodeRepo.EXPECT().GenerateCode(gomock.Any(), gomock.Any()).Return("123456", nil)
+
+		req := &dto.AuthSendCodeRequest{Email: ""}
+		err := srv.Auth().SendCode(ctx, req)
+
+		assert.Error(t, err)
+		assert.Equal(t, ecodes.IAM_SEND_VERIFICATION_CODE_FAILED, cerrors.Code(err))
+	})
+
+	t.Run("测试邮箱不合法的情况", func(t *testing.T) {
+		mockRepo.EXPECT().VerificationCode().Return(mockVerificationCodeRepo)
+		mockVerificationCodeRepo.EXPECT().GenerateCode(gomock.Any(), gomock.Any()).Return("123456", nil)
+
+		req := &dto.AuthSendCodeRequest{Email: "123456"}
+		err := srv.Auth().SendCode(ctx, req)
+
+		assert.Error(t, err)
+		assert.Equal(t, ecodes.IAM_SEND_VERIFICATION_CODE_FAILED, cerrors.Code(err))
+	})
+
+	t.Run("测试发送验证码成功", func(t *testing.T) {
+		mockRepo.EXPECT().VerificationCode().Return(mockVerificationCodeRepo)
+		mockVerificationCodeRepo.EXPECT().GenerateCode(gomock.Any(), gomock.Any()).Return("123456", nil)
+
+		req := &dto.AuthSendCodeRequest{Email: "342310798@qq.com"}
+		err := srv.Auth().SendCode(ctx, req)
+
+		assert.NoError(t, err)
+	})
+}

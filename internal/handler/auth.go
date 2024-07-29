@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/lantonster/ginkit"
 	"github.com/lantonster/iam/internal/dto"
@@ -65,5 +67,26 @@ func (h *AuthHandler) UsernameAvailable(c *gin.Context) {
 	}
 
 	err := h.service.Auth().UsernameAvailable(c, &req)
+	ginkit.Response(c, nil, err)
+}
+
+// SendCode godoc
+//
+//	@Summary	发送验证码
+//	@Produce	json
+//	@Param		body	body		dto.AuthSendCodeRequest	true	"发送验证码"
+//	@Success	200		{object}	ginkit.SwaggerResponse{}
+//	@Failure	400		{object}	ginkit.SwaggerResponseInvalidParam{}
+//	@Router		/auth/send_code [post]
+func (h *AuthHandler) SendCode(c *gin.Context) {
+	var req dto.AuthSendCodeRequest
+	fmt.Printf("c.Request: %+v\n", c.Request)
+	fmt.Printf("c.Request.Body: %+v\n", c.Request.Body)
+	if err := c.ShouldBind(&req); err != nil {
+		ginkit.ResponseInvalidParam(c, err)
+		return
+	}
+
+	err := h.service.Auth().SendCode(c, &req)
 	ginkit.Response(c, nil, err)
 }

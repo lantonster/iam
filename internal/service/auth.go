@@ -1,13 +1,17 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/lantonster/cerrors"
 	"github.com/lantonster/ecodes"
+	"github.com/lantonster/iam/config"
 	"github.com/lantonster/iam/internal/dto"
 	"github.com/lantonster/iam/internal/model"
 	"github.com/lantonster/iam/internal/repo"
 	"github.com/lantonster/iam/pkg/utils"
+	"gopkg.in/gomail.v2"
 )
 
 type AuthService interface {
@@ -19,15 +23,20 @@ type AuthService interface {
 
 	// 用户名是否可用
 	UsernameAvailable(c *gin.Context, req *dto.AuthUsernameAvailableRequest) error
+
+	// 发送验证码
+	SendCode(c *gin.Context, req *dto.AuthSendCodeRequest) error
 }
 
 type defaultAuthService struct {
-	repo repo.Repo
+	email *config.EmailAuth
+	repo  repo.Repo
 }
 
-func newDefaultAuthService(repo repo.Repo) *defaultAuthService {
+func newDefaultAuthService(conf *config.Config, repo repo.Repo) *defaultAuthService {
 	return &defaultAuthService{
-		repo: repo,
+		email: conf.Email,
+		repo:  repo,
 	}
 }
 
@@ -62,7 +71,6 @@ func (s *defaultAuthService) UserInfo(c *gin.Context) (res *dto.AuthUserInfoResp
 	return res, nil
 }
 
-// UsernameAvailable 方法用于检查用户名是否可用
 func (s *defaultAuthService) UsernameAvailable(c *gin.Context, req *dto.AuthUsernameAvailableRequest) error {
 	// 检查用户名是否合法
 	if err := model.IsUsernameValid(req.Username); err != nil {
@@ -74,6 +82,37 @@ func (s *defaultAuthService) UsernameAvailable(c *gin.Context, req *dto.AuthUser
 		return err
 	} else if duplicated {
 		return cerrors.WithCode(ecodes.IAM_USERNAME_ALREADY_EXISTS, "the username already exists")
+	}
+
+	return nil
+}
+
+func (s *defaultAuthService) SendCode(c *gin.Context, req *dto.AuthSendCodeRequest) error {
+	// 生成验证码
+	code, err := s.repo.VerificationCode().GenerateCode(c, req.Email)
+	if err != nil {
+		return cerrors.Wrap(err, "generate verification code")
+	}
+
+	// 获取邮件相关配置
+	vc := s.email.VerificationCode
+	// 创建邮件消息
+	m := gomail.NewMessage()
+	// 设置发件人
+	m.SetHeader("From", vc.Sender)
+	// 设置收件人
+	m.SetHeader("To", req.Email)
+	// 设置邮件主题
+	m.SetHeader("Subject", vc.Subject)
+
+	// 构建邮件内容，将验证码插入到指定内容模板中
+	content := fmt.Sprintf(vc.Content, code)
+	m.SetBody("text/html", content)
+
+	// 创建发送器并尝试发送邮件
+	d := gomail.NewDialer(s.email.SmtpHost, s.email.SmtpPort, s.email.SmtpUsername, s.email.SmtpPassword)
+	if err := d.DialAndSend(m); err != nil {
+		return cerrors.WithCode(ecodes.IAM_SEND_VERIFICATION_CODE_FAILED, err.Error())
 	}
 
 	return nil

@@ -1,6 +1,9 @@
 package service
 
-import "github.com/lantonster/iam/internal/repo"
+import (
+	"github.com/lantonster/iam/config"
+	"github.com/lantonster/iam/internal/repo"
+)
 
 type Service interface {
 	Auth() AuthService
@@ -10,9 +13,9 @@ type defaultService struct {
 	auth AuthService
 }
 
-func NewDefaultService(repo repo.Repo) Service {
+func NewDefaultService(conf *config.Config, repo repo.Repo) Service {
 	return &defaultService{
-		auth: newDefaultAuthService(repo),
+		auth: newDefaultAuthService(conf, repo),
 	}
 }
 
